@@ -46,12 +46,12 @@ public class DataProcessor {
         List<Integer> sorted = numbers.stream()
                 .sorted()
                 .toList();
-        int median = numbers.size() / 2;
+        int median = sorted.size() / 2;
 
         if (sorted.size() % 2 != 0) {
             return sorted.get(median);
         }
-        return (double) (sorted.get(median) + sorted.get(median)) / 2;
+        return (double) (sorted.get(median - 1) + sorted.get(median)) / 2;
     }
 
     private double findAverage() {
@@ -63,33 +63,6 @@ public class DataProcessor {
     }
 
     private List<Integer> findLongestIncreasingSequence() {
-        int currentLength = 1;
-        int currentStart = 0;
-
-        int maxLength = 0;
-        int startOfMaxSequence = 0;
-
-        for (int i = 1; i < numbers.size(); i++) {
-            if (numbers.get(i) <= numbers.get(i - 1)) {
-                currentLength++;
-                if (currentLength > maxLength) {
-                    maxLength = currentLength;
-                    startOfMaxSequence = currentStart;
-                }
-            } else {
-                currentLength = 1;
-                currentStart = i;
-            }
-        }
-
-        List<Integer> result = new ArrayList<>();
-        for (int i = startOfMaxSequence; i < startOfMaxSequence + maxLength; i++) {
-            result.add(numbers.get(i));
-        }
-        return result;
-    }
-
-    private List<Integer> findLongestDecreasingSequence() {
         int currentLength = 1;
         int currentStart = 0;
 
@@ -116,14 +89,41 @@ public class DataProcessor {
         return result;
     }
 
+    private List<Integer> findLongestDecreasingSequence() {
+        int currentLength = 1;
+        int currentStart = 0;
+
+        int maxLength = 0;
+        int startOfMaxSequence = 0;
+
+        for (int i = 1; i < numbers.size(); i++) {
+            if (numbers.get(i) <= numbers.get(i - 1)) {
+                currentLength++;
+                if (currentLength > maxLength) {
+                    maxLength = currentLength;
+                    startOfMaxSequence = currentStart;
+                }
+            } else {
+                currentLength = 1;
+                currentStart = i;
+            }
+        }
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = startOfMaxSequence; i < startOfMaxSequence + maxLength; i++) {
+            result.add(numbers.get(i));
+        }
+        return result;
+    }
+
     private String getResult() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Max value: ").append(findMax());
-        sb.append("\n Min value: ").append(findMin());
-        sb.append("\n Median: ").append(findMedian());
-        sb.append("\n Average: ").append(findAverage());
-        sb.append("\n The Longest Increasing Sequence: ").append(findLongestIncreasingSequence());
-        sb.append("\n The Longest Decreasing Sequence: ").append(findLongestDecreasingSequence());
+        sb.append("Max value: ").append(findMax())
+                .append("\n Min value: ").append(findMin())
+                .append("\n Median: ").append(findMedian())
+                .append("\n Average: ").append(findAverage())
+                .append("\n The Longest Increasing Sequence: ").append(findLongestIncreasingSequence())
+                .append("\n The Longest Decreasing Sequence: ").append(findLongestDecreasingSequence());
         return sb.toString();
     }
 }
